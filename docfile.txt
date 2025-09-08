@@ -1,0 +1,76 @@
+# Use official Tomcat base (Tomcat 9 with OpenJDK 11) — change tag if needed
+FROM tomcat:9.0-jdk11-openjdk
+
+# Remove default webapps (optional, keeps image clean)
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy your built WAR to Tomcat webapps folder and name it ROOT.war (or BookApp.war)
+# Ensure you ran: mvn -DskipTests clean package and target/*.war exists
+COPY target/bookcar.war /usr/local/tomcat/webapps/ROOT.war
+
+# Expose port Tomcat uses
+EXPOSE 8080
+
+# Start Tomcat (already CMD in base image; this line is optional)
+CMD ["catalina.sh", "run"]
+
+
+# from repo root (where Dockerfile is)
+docker build -t yourdockerhubusername/hospital-mgmt:latest .
+# or with explicit tag version
+docker build -t yourdockerhubusername/hospital-mgmt:1.0 .
+
+
+docker images       # lists all images
+# or more compact:
+docker image ls
+
+
+docker run -d --name hospital-mgmt -p 9090:8080 yourdockerhubusername/hospital-mgmt:latest
+
+
+docker pull tomcat:9.0-jdk11-openjdk
+docker run -d --name tomcat-test -p 8080:8080 tomcat:9.0-jdk11-openjdk
+
+
+# login (will ask username/password)
+docker login
+
+# tag (if not already tagged with yourhub/..)
+docker tag yourdockerhubusername/hospital-mgmt:latest yourdockerhubusername/hospital-mgmt:1.0
+
+# push
+docker push yourdockerhubusername/hospital-mgmt:1.0
+
+
+# stop and remove incorrect container
+docker stop hospital-mgmt
+docker rm hospital-mgmt
+
+# re-run with proper port mapping
+docker run -d --name hospital-mgmt -p 9090:8080 yourdockerhubusername/hospital-mgmt:latest
+
+
+# view logs
+docker logs hospital-mgmt
+
+# follow logs live
+docker logs -f hospital-mgmt
+
+
+docker login
+docker tag hospital-mgmt yourdockerhubusername/hospital-mgmt:1.0
+docker push yourdockerhubusername/hospital-mgmt:1.0
+
+
+
+docker exec -it hospital-mgmt /bin/bash
+# or if /bin/bash missing:
+docker exec -it hospital-mgmt /bin/sh
+
+
+
+
+docker ps -a
+docker ps -a --filter "status=exited"
+docker rm $(docker ps -a -f status=exited -q)
