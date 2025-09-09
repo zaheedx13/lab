@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>WebSocket Browser Test</title>
+  <style>
+    body { font-family: system-ui, Arial; padding: 16px; }
+    #log { white-space: pre-wrap; border: 1px solid #ddd; padding: 8px; height: 220px; overflow:auto; margin-top:8px; }
+    #controls { margin-top:8px; }
+    input { padding:6px; width:300px; }
+    button { padding:6px 10px; margin-left:6px; }
+  </style>
+</head>
+<body>
+  <h3>WebSocket Test</h3>
+  <div>Status: <span id="status">-</span></div>
+
+  <div id="controls">
+    <input id="msg" placeholder="Type a message" />
+    <button id="send">Send</button>
+    <button id="clear">Clear</button>
+  </div>
+
+  <pre id="log"></pre>
+
+  <script>
+    (function () {
+      const WS_URL = 'ws://localhost:8080';
+      const statusEl = document.getElementById('status');
+      const logEl = document.getElementById('log');
+      const input = document.getElementById('msg');
+      const sendBtn = document.getElementById('send');
+      const clearBtn = document.getElementById('clear');
+
+      function appendLine(line) {
+        logEl.textContent += line + '\n';
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      let ws = new WebSocket(WS_URL);
+      statusEl.textContent = 'Connecting...';
+
+      ws.onopen = () => {
+        statusEl.textContent = 'Connected';
+        appendLine('Connected to ' + WS_URL);
+      };
+
+      ws.onmessage = (event) => {
+        appendLine('From server: ' + event.data);
+      };
+
+      ws.onclose = (ev) => {
+        statusEl.textContent = 'Disconnected';
+        appendLine('Disconnected from server (code=' + ev.code + ')');
+      };
+
+      ws.onerror = (err) => {
+        appendLine('WebSocket error (see console)');
+        console.error('WebSocket error:', err);
+      };
+
+      sendBtn.onclick = () => {
+        const txt = input.value;
+        if (!txt) return;
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(txt);
+          appendLine('Sent: ' + txt);
+          input.value = '';
+        } else {
+          appendLine('Socket not open. Current state: ' + ws.readyState);
+        }
+      };
+
+      clearBtn.onclick = () => {
+        logEl.textContent = '';
+      };
+    })();
+  </script>
+</body>
+</html>
