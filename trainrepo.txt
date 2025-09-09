@@ -1,49 +1,35 @@
-trainrepo
-
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <!-- Required model version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>SEGroup.booktrain</groupId>
+  <groupId>SEgroup.booktrain</groupId>
   <artifactId>booktrain</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-
-  <!-- This project is a web application -->
   <packaging>war</packaging>
 
   <name>booktrain Maven Webapp</name>
   <url>https://github.com/anujyog1/trainrepo</url>
 
   <properties>
-    <!-- correct encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <!-- Target Java version: change to 21 if you really need Java 21 -->
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
 
-    <!-- plugin versions -->
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
   </properties>
 
   <dependencies>
-    <!-- Servlet API (compile-time only) -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
-
-    <!-- JUnit for testing (stable 4.x) -->
+    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -53,11 +39,10 @@ trainrepo
   </dependencies>
 
   <build>
-    <!-- output WAR name -->
     <finalName>booktrain</finalName>
 
     <plugins>
-      <!-- Compiler plugin configured to use 'release' -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -67,30 +52,13 @@ trainrepo
         </configuration>
       </plugin>
 
-      <!-- Surefire plugin for running tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.plugin.version}</version>
       </plugin>
 
-      <!-- WAR plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>${maven.war.plugin.version}</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
-  <!-- optional SCM metadata -->
-  <scm>
-    <url>https://github.com/anujyog1/trainrepo</url>
-    <connection>scm:git:https://github.com/anujyog1/trainrepo.git</connection>
-    <developerConnection>scm:git:git@github.com:anujyog1/trainrepo.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
 </project>
